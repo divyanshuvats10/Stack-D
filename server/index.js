@@ -10,6 +10,7 @@ app.use(express.json());
 
 app.use("/api/pizzas", require("./routes/pizzaRoutes"));
 app.use("/api/ingredients", require("./routes/ingredientRoutes"));
+app.use("/api/orders", require("./routes/orderRoutes"));
 
 const PORT = process.env.PORT || 5000;
 

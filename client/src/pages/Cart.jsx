@@ -24,44 +24,37 @@ const Cart = () => {
 
   if (items.length === 0) {
     return (
-      <div className="cart-page empty">
-        <h2>Your cart is empty</h2>
-        <button className="btn-primary" onClick={() => navigate("/order")}>
-          Browse Pizzas
+      <main className="mx-auto max-w-7xl px-5 py-20 text-center lg:px-8"><p className="mb-3 font-mono text-xs uppercase tracking-[0.2em] text-tomato">// nothing here yet</p>
+        <h1 className="text-5xl font-extrabold tracking-[-0.06em] text-ink">Your cart is<br /><span className="text-tomato">waiting.</span></h1>
+        <button className="mt-8 rounded-xl bg-tomato px-6 py-3.5 text-sm font-extrabold text-white" onClick={() => navigate("/order")}>
+          Browse the menu →
         </button>
-      </div>
+      </main>
     );
   }
 
   return (
-    <div className="cart-page">
-      <h2>Your Cart</h2>
-
-      <div className="cart-items">
+    <main className="mx-auto max-w-7xl px-5 py-12 lg:px-8 lg:py-16">
+      <div className="mb-10 border-b border-line pb-8"><p className="mb-3 font-mono text-xs uppercase tracking-[0.2em] text-tomato">// almost there</p><h1 className="text-5xl font-extrabold tracking-[-0.06em] text-ink">Your order.</h1></div>
+      <div className="grid items-start gap-8 lg:grid-cols-[1fr_360px]">
+      <div className="space-y-3">
         {items.map((item) => (
-          <div key={item.cartItemId} className="cart-item">
-            <img src={item.image} alt={item.name} />
-
-            <div className="cart-item-details">
-              <h4>{item.name}</h4>
-              {item.customizations?.length > 0 && (
-                <p className="customizations">
-                  {item.customizations.join(", ")}
-                </p>
-              )}
-              <p className="unit-price">₹{item.unitPrice} each</p>
+          <div key={item.cartItemId} className="flex gap-4 rounded-2xl border border-line bg-paper p-4 sm:items-center">
+            <img className="h-24 w-24 rounded-xl object-cover" src={item.image} alt={item.name} />
+            <div className="min-w-0 flex-1"><h4 className="font-extrabold text-ink">{item.name}</h4>{item.customizations?.length > 0 && <div className="mt-2 flex max-w-full flex-wrap gap-1.5">{item.customizations.map((customization) => <span key={customization} className="max-w-full break-words rounded-md bg-[#eee7de] px-2 py-1 text-[10px] leading-tight text-muted">{customization}</span>)}</div>}<p className="mt-2 font-mono text-xs text-muted">₹{item.unitPrice} each</p>
             </div>
-
-            <div className="quantity-control">
+            <div className="flex items-center rounded-lg border border-line p-0.5">
               <button
+                className="h-7 w-7 rounded-md text-lg text-muted hover:bg-[#eee7de]"
                 onClick={() =>
                   handleQuantityChange(item.cartItemId, item.quantity - 1)
                 }
               >
                 -
               </button>
-              <span>{item.quantity}</span>
+              <span className="w-7 text-center font-mono text-xs">{item.quantity}</span>
               <button
+                className="h-7 w-7 rounded-md text-lg text-muted hover:bg-[#eee7de]"
                 onClick={() =>
                   handleQuantityChange(item.cartItemId, item.quantity + 1)
                 }
@@ -69,34 +62,19 @@ const Cart = () => {
                 +
               </button>
             </div>
-
-            <p className="item-total">₹{item.itemTotal}</p>
-
+            <p className="hidden font-mono text-sm font-medium text-ink sm:block">₹{item.itemTotal}</p>
             <button
-              className="remove-btn"
+              className="self-start text-muted hover:text-tomato"
               onClick={() => handleRemove(item.cartItemId)}
             >
-              ✕
+              ×
             </button>
           </div>
         ))}
       </div>
-
-      <div className="cart-summary">
-        <h3>Total: ₹{grandTotal}</h3>
-        <div className="cart-actions">
-          <button className="btn-secondary" onClick={() => dispatch(clearCart())}>
-            Clear Cart
-          </button>
-          <button
-            className="btn-primary"
-            onClick={() => navigate("/checkout")}
-          >
-            Proceed to Checkout
-          </button>
-        </div>
-      </div>
-    </div>
+      <aside className="rounded-[1.5rem] bg-ink p-6 text-white lg:sticky lg:top-24"><div className="mb-6 flex justify-between text-sm text-white/60"><span>Items</span><span>{items.length}</span></div><div className="mb-6 flex justify-between border-b border-white/10 pb-6 text-sm text-white/60"><span>Delivery</span><span className="text-sage">Free</span></div><div className="flex items-end justify-between"><span className="text-sm text-white/60">Total</span><span className="font-mono text-2xl">₹{grandTotal}</span></div><button className="mt-6 w-full rounded-xl bg-tomato px-4 py-3.5 text-sm font-extrabold hover:bg-[#f0644d]" onClick={() => navigate("/checkout")}>Proceed to checkout →</button><button className="mt-3 w-full py-2 text-xs font-bold text-white/50 hover:text-white" onClick={() => dispatch(clearCart())}>Clear order</button>
+      </aside></div>
+    </main>
   );
 };
 

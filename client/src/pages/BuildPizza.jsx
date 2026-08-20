@@ -110,127 +110,33 @@ const BuildPizza = () => {
   };
 
   if (loading) return <Loader />;
-  if (error) return <p className="error-text">{error}</p>;
+  if (error) return <p className="mx-auto max-w-7xl px-5 py-16 text-tomato">{error}</p>;
 
   return (
-    <div className="build-page">
-      <h2>Build Your Own Pizza</h2>
-
-      <IngredientGroup
-        title="Choose Base"
-        items={grouped.base}
-        selected={selected.base}
-        onSelect={(item) => handleSingleSelect("base", item)}
-      />
-      <IngredientGroup
-        title="Choose Sauce"
-        items={grouped.sauce}
-        selected={selected.sauce}
-        onSelect={(item) => handleSingleSelect("sauce", item)}
-      />
-      <IngredientGroup
-        title="Choose Cheese"
-        items={grouped.cheese}
-        selected={selected.cheese}
-        onSelect={(item) => handleSingleSelect("cheese", item)}
-      />
-
-      <div className="ingredient-group">
-        <h3>Add Toppings</h3>
-        <div className="ingredient-options">
-          {grouped.topping.map((item) => {
-            const isSelected = selected.toppings.some((t) => t._id === item._id);
-            return (
-              <button
-                key={item._id}
-                className={`ingredient-btn ${isSelected ? "active" : ""}`}
-                onClick={() => handleToppingToggle(item)}
-              >
-                {item.name} {item.price > 0 && `+₹${item.price}`}
-              </button>
-            );
-          })}
-        </div>
+    <main className="mx-auto max-w-7xl px-5 py-12 lg:px-8 lg:py-16">
+      <div className="mb-10"><p className="mb-3 font-mono text-xs uppercase tracking-[0.2em] text-tomato">// your canvas, your rules</p><h1 className="text-5xl font-extrabold tracking-[-0.06em] text-ink">Build something<br /><span className="text-tomato">delicious.</span></h1></div>
+      <div className="grid items-start gap-8 lg:grid-cols-[1fr_360px]">
+        <section className="space-y-6">
+          <IngredientGroup title="01 / Choose a base" items={grouped.base} selected={selected.base} onSelect={(item) => handleSingleSelect("base", item)} />
+          <IngredientGroup title="02 / Pick a sauce" items={grouped.sauce} selected={selected.sauce} onSelect={(item) => handleSingleSelect("sauce", item)} />
+          <IngredientGroup title="03 / Add cheese" items={grouped.cheese} selected={selected.cheese} onSelect={(item) => handleSingleSelect("cheese", item)} />
+          <div className="rounded-2xl border border-line bg-paper p-6"><h3 className="mb-4 text-lg font-extrabold text-ink">04 / Top it off</h3><div className="flex flex-wrap gap-2">{grouped.topping.map((item) => { const isSelected = selected.toppings.some((t) => t._id === item._id); return <button key={item._id} className={`rounded-full border px-4 py-2.5 text-sm font-semibold transition ${isSelected ? 'border-tomato bg-[#fbe5df] text-tomato' : 'border-line text-muted hover:border-tomato hover:text-tomato'}`} onClick={() => handleToppingToggle(item)}>{item.name}{item.price > 0 && <span className="ml-2 font-mono text-xs">+₹{item.price}</span>}</button>; })}</div></div>
+        </section>
+        <aside className="sticky top-24 rounded-[1.5rem] bg-ink p-6 text-white shadow-xl"><div className="mb-8 flex items-center justify-between"><span className="font-mono text-xs uppercase tracking-[0.18em] text-[#f7b5a9]">Your creation</span><span className="rounded-full bg-white/10 px-3 py-1 font-mono text-xs">{quantity} pizza</span></div><div className="mb-8 grid aspect-square place-items-center rounded-2xl bg-[#493e36] text-8xl">🍕</div><h2 className="text-2xl font-extrabold">Custom Pizza</h2><div className="mt-4 space-y-2 border-b border-white/10 pb-5 text-sm text-white/60"><p>{selected.base?.name || 'Choose a base'}</p><p>{selected.sauce?.name || 'Choose a sauce'}</p><p>{selected.cheese?.name || 'Choose cheese'}</p>{selected.toppings.map((topping) => <p key={topping._id}>{topping.name}</p>)}</div><div className="mt-5 flex items-end justify-between"><span className="text-sm text-white/60">Total</span><span className="font-mono text-2xl">₹{totalPrice}</span></div><div className="mt-5 flex items-center justify-between rounded-xl bg-white/10 p-1"><button className="h-9 w-10 rounded-lg text-xl hover:bg-white/10" onClick={() => setQuantity((q) => Math.max(1, q - 1))}>−</button><span className="font-mono text-sm">{quantity}</span><button className="h-9 w-10 rounded-lg text-xl hover:bg-white/10" onClick={() => setQuantity((q) => q + 1)}>+</button></div><button className="mt-4 w-full rounded-xl bg-tomato px-4 py-3.5 text-sm font-extrabold transition hover:bg-[#f0644d] disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-white/40" disabled={!isValid} onClick={handleAddToCart}>Add to cart <span className="ml-1">→</span></button>{!isValid && <p className="mt-3 text-center text-xs text-white/40">Select a base, sauce, and cheese to continue.</p>}</aside>
       </div>
-
-	        <div className="ingredient-group">
-        <h3>Add Toppings</h3>
-        <div className="ingredient-options">
-          {grouped.topping.map((item) => {
-            const isSelected = selected.toppings.some((t) => t._id === item._id);
-            return (
-              <button
-                key={item._id}
-                className={`ingredient-btn ${isSelected ? "active" : ""}`}
-                onClick={() => handleToppingToggle(item)}
-              >
-                {item.name} {item.price > 0 && `+₹${item.price}`}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* NEW: selected toppings list with remove buttons */}
-        {selected.toppings.length > 0 && (
-          <div className="selected-toppings">
-            <h4>Selected Toppings</h4>
-            <ul>
-              {selected.toppings.map((topping) => (
-                <li key={topping._id} className="selected-topping-item">
-                  <span>
-                    {topping.name} {topping.price > 0 && `(+₹${topping.price})`}
-                  </span>
-                  <button
-                    className="remove-topping-btn"
-                    onClick={() => handleToppingToggle(topping)}
-                    aria-label={`Remove ${topping.name}`}
-                  >
-                    ✕
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
-
-      <div className="build-summary">
-        <div className="quantity-control">
-          <button onClick={() => setQuantity((q) => Math.max(1, q - 1))}>-</button>
-          <span>{quantity}</span>
-          <button onClick={() => setQuantity((q) => q + 1)}>+</button>
-        </div>
-
-        <p className="live-price">Unit Price: ₹{unitPrice}</p>
-        <p className="live-price total">Total: ₹{totalPrice}</p>
-
-        {!isValid && (
-          <p className="validation-msg">
-            Please select a base, sauce, and cheese to continue.
-          </p>
-        )}
-
-        <button
-          className="btn-primary"
-          disabled={!isValid}
-          onClick={handleAddToCart}
-        >
-          Add to Cart
-        </button>
-      </div>
-    </div>
+    </main>
   );
 };
 
 // reusable single-select group (base/sauce/cheese)
 const IngredientGroup = ({ title, items, selected, onSelect }) => (
-  <div className="ingredient-group">
-    <h3>{title}</h3>
-    <div className="ingredient-options">
+  <div className="rounded-2xl border border-line bg-paper p-6">
+    <h3 className="mb-4 text-lg font-extrabold text-ink">{title}</h3>
+    <div className="grid gap-2 sm:grid-cols-3">
       {items.map((item) => (
         <button
           key={item._id}
-          className={`ingredient-btn ${selected?._id === item._id ? "active" : ""}`}
+          className={`rounded-xl border px-4 py-3 text-left text-sm font-semibold transition ${selected?._id === item._id ? "border-tomato bg-[#fbe5df] text-tomato" : "border-line text-muted hover:border-tomato hover:text-tomato"}`}
           onClick={() => onSelect(item)}
         >
           {item.name} {item.price > 0 && `+₹${item.price}`}
