@@ -13,7 +13,6 @@ app.use("/api/pizzas", require("./routes/pizzaRoutes"));
 app.use("/api/ingredients", require("./routes/ingredientRoutes"));
 app.use("/api/orders", require("./routes/orderRoutes"));
 app.use("/api/cart", require("./routes/cartRoutes"));
-app.use("/api/templates", require("./routes/templateRoutes"));
 
 const PORT = process.env.PORT || 5000;
 
