@@ -6,14 +6,10 @@ import BuildPizza from "./pages/BuildPizza";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import CartSync from "./app/CartSync";
 
 function App() {
   return (
     <>
-      <CartSync />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -22,8 +18,6 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/order-confirmation/:id" element={<OrderConfirmation />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
       </Routes>
     </>
   );

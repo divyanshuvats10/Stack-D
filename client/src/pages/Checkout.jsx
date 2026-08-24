@@ -18,7 +18,6 @@ const checkoutSchema = z.object({
 });
 
 const Checkout = () => {
-  const user = useSelector((state) => state.auth.user);
   const items = useSelector((state) => state.cart.items);
   const grandTotal = items.reduce((sum, item) => sum + item.itemTotal, 0);
   const dispatch = useDispatch();
@@ -32,9 +31,6 @@ const Checkout = () => {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(checkoutSchema),
-    defaultValues: {
-      customerName: user?.name || "",
-    },
   });
 
   const onSubmit = async (formData) => {
@@ -92,7 +88,7 @@ const Checkout = () => {
         {submitError && <p className="text-sm text-tomato sm:col-span-2">{submitError}</p>}
         <button type="submit" className="rounded-xl bg-tomato px-5 py-3.5 text-sm font-extrabold text-white hover:bg-[#f0644d] disabled:opacity-50 sm:col-span-2" disabled={submitting}>{submitting ? "Placing order..." : `Place order · ₹${grandTotal}`}</button>
       </form>
-      <aside className="rounded-[1.5rem] bg-ink p-6 text-white lg:sticky lg:top-24"><h3 className="mb-6 text-lg font-extrabold">Your order</h3>
+      <aside className="rounded-3xl bg-ink p-6 text-white lg:sticky lg:top-24"><h3 className="mb-6 text-lg font-extrabold">Your order</h3>
         {items.map((item) => (
           <div key={item.cartItemId} className="mb-4 flex justify-between gap-4 text-sm text-white/60"><span>{item.name} <b className="text-white/40">×{item.quantity}</b></span><span className="font-mono text-white">₹{item.itemTotal}</span></div>
         ))}

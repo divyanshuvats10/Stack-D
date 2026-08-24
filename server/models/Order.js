@@ -10,7 +10,6 @@ const orderItemSchema = new mongoose.Schema({
 
 const orderSchema = new mongoose.Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null }, // null = guest
     customerName: { type: String, required: true },
     phone: { type: String, required: true },
     address: { type: String, required: true },
