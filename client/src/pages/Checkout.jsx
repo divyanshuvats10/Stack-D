@@ -18,6 +18,7 @@ const checkoutSchema = z.object({
 });
 
 const Checkout = () => {
+  const user = useSelector((state) => state.auth.user);
   const items = useSelector((state) => state.cart.items);
   const grandTotal = items.reduce((sum, item) => sum + item.itemTotal, 0);
   const dispatch = useDispatch();
@@ -29,7 +30,12 @@ const Checkout = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: zodResolver(checkoutSchema) });
+  } = useForm({
+    resolver: zodResolver(checkoutSchema),
+    defaultValues: {
+      customerName: user?.name || "",
+    },
+  });
 
   const onSubmit = async (formData) => {
     if (items.length === 0) {

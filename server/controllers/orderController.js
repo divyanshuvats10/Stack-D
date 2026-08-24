@@ -19,6 +19,7 @@ const createOrder = async (req, res) => {
     }
 
     const order = await Order.create({
+      user: req.user ? req.user._id : null, // attach if logged in, null if guest
       customerName,
       phone,
       address,

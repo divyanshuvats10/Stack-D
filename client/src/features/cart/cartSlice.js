@@ -8,6 +8,9 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    setItems: (state, action) => {
+      state.items = action.payload;
+    },
     addToCart: (state, action) => {
       const newItem = action.payload;
       // if same pizza with same customizations already exists, increase qty
@@ -40,6 +43,6 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addToCart, removeFromCart, updateQuantity, clearCart } =
+export const { setItems, addToCart, removeFromCart, updateQuantity, clearCart } =
   cartSlice.actions;
 export default cartSlice.reducer;
