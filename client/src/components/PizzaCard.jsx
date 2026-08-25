@@ -3,7 +3,6 @@ const PizzaCard = ({ pizza, onAdd }) => {
     <article className="group overflow-hidden rounded-3xl border border-line bg-paper shadow-[0_12px_35px_rgba(52,39,29,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_45px_rgba(52,39,29,0.12)]">
       <div className="relative aspect-[1.18] overflow-hidden bg-[#e8d4c4]">
         <img className="h-full w-full object-cover transition duration-500 group-hover:scale-105" src={pizza.image} alt={pizza.name} />
-        <span className="absolute left-4 top-4 rounded-full bg-paper/90 px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-muted">{pizza.category}</span>
       </div>
       <div className="p-5">
         <div className="mb-4 flex items-start justify-between gap-3">

@@ -5,7 +5,6 @@ const pizzaSchema = new mongoose.Schema({
   description: String,
   basePrice: { type: Number, required: true },
   image: String,
-  category: { type: String, enum: ["veg", "non-veg"], default: "veg" },
 }, { timestamps: true });
 
 module.exports = mongoose.model("Pizza", pizzaSchema);
