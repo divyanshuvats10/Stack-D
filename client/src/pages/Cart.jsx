@@ -5,6 +5,7 @@ import {
   updateQuantity,
   clearCart,
 } from "../features/cart/cartSlice";
+import customPizzaImage from "../assets/custom.png";
 
 const Cart = () => {
   const items = useSelector((state) => state.cart.items);
@@ -40,8 +41,8 @@ const Cart = () => {
       <div className="space-y-3">
         {items.map((item) => (
           <div key={item.cartItemId} className="flex gap-4 rounded-2xl border border-line bg-paper p-4 sm:items-center">
-            <img className="h-24 w-24 rounded-xl object-cover" src={item.image} alt={item.name} />
-            <div className="min-w-0 flex-1"><h4 className="font-extrabold text-ink">{item.name}</h4>{item.customizations?.length > 0 && <div className="mt-2 flex max-w-full flex-wrap gap-1.5">{item.customizations.map((customization) => <span key={customization} className="max-w-full break-words rounded-md bg-[#eee7de] px-2 py-1 text-[10px] leading-tight text-muted">{customization}</span>)}</div>}<p className="mt-2 font-mono text-xs text-muted">₹{item.unitPrice} each</p>
+            <img className="h-24 w-24 rounded-xl object-cover" src={item.pizzaId === "custom-build" ? customPizzaImage : item.image} alt={item.name} />
+            <div className="min-w-0 flex-1"><h4 className="font-extrabold text-ink">{item.name}</h4>{item.customizations?.length > 0 && <div className="mt-2 flex max-w-full flex-wrap gap-1.5">{item.customizations.map((customization) => <span key={customization} className="max-w-full wrap-break-word rounded-md bg-[#eee7de] px-2 py-1 text-[10px] leading-tight text-muted">{customization}</span>)}</div>}<p className="mt-2 font-mono text-xs text-muted">₹{item.unitPrice} each</p>
             </div>
             <div className="flex items-center rounded-lg border border-line p-0.5">
               <button
@@ -72,7 +73,7 @@ const Cart = () => {
           </div>
         ))}
       </div>
-      <aside className="rounded-[1.5rem] bg-ink p-6 text-white lg:sticky lg:top-24"><div className="mb-6 flex justify-between text-sm text-white/60"><span>Items</span><span>{items.length}</span></div><div className="mb-6 flex justify-between border-b border-white/10 pb-6 text-sm text-white/60"><span>Delivery</span><span className="text-sage">Free</span></div><div className="flex items-end justify-between"><span className="text-sm text-white/60">Total</span><span className="font-mono text-2xl">₹{grandTotal}</span></div><button className="mt-6 w-full rounded-xl bg-tomato px-4 py-3.5 text-sm font-extrabold hover:bg-[#f0644d]" onClick={() => navigate("/checkout")}>Proceed to checkout →</button><button className="mt-3 w-full py-2 text-xs font-bold text-white/50 hover:text-white" onClick={() => dispatch(clearCart())}>Clear order</button>
+      <aside className="rounded-3xl bg-ink p-6 text-white lg:sticky lg:top-24"><div className="mb-6 flex justify-between text-sm text-white/60"><span>Items</span><span>{items.length}</span></div><div className="mb-6 flex justify-between border-b border-white/10 pb-6 text-sm text-white/60"><span>Delivery</span><span className="text-sage">Free</span></div><div className="flex items-end justify-between"><span className="text-sm text-white/60">Total</span><span className="font-mono text-2xl">₹{grandTotal}</span></div><button className="mt-6 w-full rounded-xl bg-tomato px-4 py-3.5 text-sm font-extrabold hover:bg-[#f0644d]" onClick={() => navigate("/checkout")}>Proceed to checkout →</button><button className="mt-3 w-full py-2 text-xs font-bold text-white/50 hover:text-white" onClick={() => dispatch(clearCart())}>Clear order</button>
       </aside></div>
     </main>
   );
