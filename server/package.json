@@ -8,8 +8,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js",
-    "remove-pizza-categories": "node scripts/removePizzaCategories.js"
+    "dev": "nodemon index.js"
   },
   "dependencies": {
     "cors": "^2.8.6",
