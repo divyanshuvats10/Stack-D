@@ -1,16 +1,25 @@
+import { useEffect, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   removeFromCart,
   updateQuantity,
   clearCart,
+  updateIngredients,
 } from "../features/cart/cartSlice";
 import customPizzaImage from "../assets/custom.png";
+import api from "../api/axios";
 
 const Cart = () => {
   const items = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [ingredients, setIngredients] = useState([]);
+  const [editingId, setEditingId] = useState(null);
+
+  useEffect(() => {
+    api.get("/ingredients").then((res) => setIngredients(res.data)).catch(() => setIngredients([]));
+  }, []);
 
   const grandTotal = items.reduce((sum, item) => sum + item.itemTotal, 0);
 
@@ -21,6 +30,19 @@ const Cart = () => {
 
   const handleRemove = (cartItemId) => {
     dispatch(removeFromCart(cartItemId));
+  };
+
+  const ingredientGroups = useMemo(
+    () => ingredients.filter((ingredient) => ingredient.type === "topping"),
+    [ingredients]
+  );
+
+  const handleIngredientsChange = (item, ingredient) => {
+    const current = item.extraIngredients || [];
+    const next = current.some((selected) => selected._id === ingredient._id)
+      ? current.filter((selected) => selected._id !== ingredient._id)
+      : [...current, ingredient];
+    dispatch(updateIngredients({ cartItemId: item.cartItemId, extraIngredients: next }));
   };
 
   if (items.length === 0) {
@@ -40,9 +62,11 @@ const Cart = () => {
       <div className="grid items-start gap-8 lg:grid-cols-[1fr_360px]">
       <div className="space-y-3">
         {items.map((item) => (
-          <div key={item.cartItemId} className="flex gap-4 rounded-2xl border border-line bg-paper p-4 sm:items-center">
+          <div key={item.cartItemId} className="flex flex-wrap gap-4 rounded-2xl border border-line bg-paper p-4 sm:items-center">
             <img className="h-24 w-24 rounded-xl object-cover" src={item.pizzaId === "custom-build" ? customPizzaImage : item.image} alt={item.name} />
-            <div className="min-w-0 flex-1"><h4 className="font-extrabold text-ink">{item.name}</h4>{item.customizations?.length > 0 && <div className="mt-2 flex max-w-full flex-wrap gap-1.5">{item.customizations.map((customization) => <span key={customization} className="max-w-full wrap-break-word rounded-md bg-[#eee7de] px-2 py-1 text-[10px] leading-tight text-muted">{customization}</span>)}</div>}<p className="mt-2 font-mono text-xs text-muted">₹{item.unitPrice} each</p>
+            <div className="min-w-0 flex-1"><h4 className="font-extrabold text-ink">{item.name}</h4>{item.customizations?.length > 0 && <div className="mt-2 flex max-w-full flex-wrap gap-1.5">{item.customizations.map((customization, index) => <span key={`${customization}-${index}`} className="max-w-full wrap-break-word rounded-md bg-[#eee7de] px-2 py-1 text-[10px] leading-tight text-muted">{customization}</span>)}</div>}<div className="mt-3 space-y-1 font-mono text-xs text-muted"><p>Pizza: ₹{item.basePrice ?? item.unitPrice}</p>{item.extraIngredients?.length > 0 && <p>Ingredients: +₹{item.extraIngredients.reduce((sum, ingredient) => sum + ingredient.price, 0)}</p>}<p className="font-medium text-ink">Total: ₹{item.unitPrice} each</p></div>
+              <button className="mt-3 text-xs font-bold text-tomato" onClick={() => setEditingId(editingId === item.cartItemId ? null : item.cartItemId)}>{editingId === item.cartItemId ? "Done" : "+ Add ingredients"}</button>
+              {editingId === item.cartItemId && <div className="mt-3 flex flex-wrap gap-2">{ingredientGroups.map((ingredient) => { const selected = item.extraIngredients?.some((extra) => extra._id === ingredient._id); return <button key={ingredient._id} className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${selected ? "border-tomato bg-[#fbe5df] text-tomato" : "border-line text-muted"}`} onClick={() => handleIngredientsChange(item, ingredient)}>{ingredient.name} +₹{ingredient.price}</button>; })}</div>}
             </div>
             <div className="flex items-center rounded-lg border border-line p-0.5">
               <button

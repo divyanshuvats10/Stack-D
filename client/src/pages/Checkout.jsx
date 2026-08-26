@@ -90,7 +90,7 @@ const Checkout = () => {
       </form>
       <aside className="rounded-3xl bg-ink p-6 text-white lg:sticky lg:top-24"><h3 className="mb-6 text-lg font-extrabold">Your order</h3>
         {items.map((item) => (
-          <div key={item.cartItemId} className="mb-4 flex justify-between gap-4 text-sm text-white/60"><span>{item.name} <b className="text-white/40">×{item.quantity}</b></span><span className="font-mono text-white">₹{item.itemTotal}</span></div>
+          <div key={item.cartItemId} className="mb-4 flex justify-between gap-4 text-sm text-white/60"><div><p>{item.name} <b className="text-white/40">×{item.quantity}</b></p><p className="mt-1 text-xs text-white/40">Pizza ₹{item.basePrice ?? item.unitPrice}{item.extraIngredients?.length > 0 && ` + ingredients ₹${item.extraIngredients.reduce((sum, ingredient) => sum + ingredient.price, 0)}`}</p></div><span className="font-mono text-white">₹{item.itemTotal}</span></div>
         ))}
         <div className="mt-6 flex justify-between border-t border-white/10 pt-5"><span className="text-sm text-white/60">Total</span><span className="font-mono text-2xl">₹{grandTotal}</span></div></aside></div>
     </main>

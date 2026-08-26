@@ -37,12 +37,29 @@ const cartSlice = createSlice({
         item.itemTotal = item.quantity * item.unitPrice;
       }
     },
+    updateIngredients: (state, action) => {
+      const { cartItemId, extraIngredients } = action.payload;
+      const item = state.items.find((cartItem) => cartItem.cartItemId === cartItemId);
+      if (item) {
+        item.originalCustomizations = item.originalCustomizations || (item.customizations || []).filter(
+          (customization) => !customization.startsWith("Extra ")
+        );
+        item.extraIngredients = extraIngredients;
+        item.basePrice = item.basePrice ?? item.unitPrice;
+        item.unitPrice = item.basePrice + extraIngredients.reduce((sum, ingredient) => sum + ingredient.price, 0);
+        item.itemTotal = item.quantity * item.unitPrice;
+        item.customizations = [
+          ...(item.originalCustomizations || item.customizations || []),
+          ...extraIngredients.map((ingredient) => `Extra ${ingredient.name}`),
+        ];
+      }
+    },
     clearCart: (state) => {
       state.items = [];
     },
   },
 });
 
-export const { setItems, addToCart, removeFromCart, updateQuantity, clearCart } =
+export const { setItems, addToCart, removeFromCart, updateQuantity, updateIngredients, clearCart } =
   cartSlice.actions;
 export default cartSlice.reducer;

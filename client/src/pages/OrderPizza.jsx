@@ -33,9 +33,12 @@ const OrderPizza = () => {
         pizzaId: pizza._id,
         name: pizza.name,
         image: pizza.image,
+        basePrice: pizza.basePrice,
         unitPrice: pizza.basePrice,
         quantity: 1,
         customizations: [],
+        originalCustomizations: [],
+        extraIngredients: [],
         itemTotal: pizza.basePrice,
       })
     );

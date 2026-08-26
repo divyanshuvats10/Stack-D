@@ -92,6 +92,7 @@ const BuildPizza = () => {
         pizzaId: BASE_PIZZA_ID,
         name: "Custom Pizza",
         image: "/images/custom-pizza.jpg",
+        basePrice: BASE_PIZZA_PRICE,
         unitPrice,
         quantity,
         customizations: [
@@ -100,6 +101,13 @@ const BuildPizza = () => {
           selected.cheese.name,
           ...selected.toppings.map((t) => t.name),
         ],
+        originalCustomizations: [
+          selected.base.name,
+          selected.sauce.name,
+          selected.cheese.name,
+          ...selected.toppings.map((t) => t.name),
+        ],
+        extraIngredients: [],
         itemTotal: totalPrice,
       })
     );
